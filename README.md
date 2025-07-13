@@ -3,6 +3,8 @@
 PDF-Glimpse is a powerful and intuitive application that allows you to have a conversation with your PDF documents. Simply upload a PDF, ask a question, and get intelligent, context-aware answers. This tool leverages a sophisticated Retrieval-Augmented Generation (RAG) pipeline to understand your documents and provide precise information.
 
 ---
+![PDF Glimpse Web View](https://github.com/Nakib00/PDF-Glimpse/blob/main/view/PDF%20Glimpse%20view.png?raw=true)
+
 
 ## 🚀 How it Works
 
