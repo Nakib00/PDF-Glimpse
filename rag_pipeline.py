@@ -13,20 +13,22 @@ def get_context(documents):
     context ="\n\n".join([doc.page_content for doc in documents])
     return context
 
-# Answer the question using the LLM
-custome_prompt = """
-Imagine I'm a helpful teacher and the text below is our study material for today.
-My job is to answer your question using **only** the information from this material. I will explain the answer in a very simple and clear way.
-If our study material doesn't have the answer, I will honestly tell you, "That information isn't in the text we have." I promise not to guess or make things up.
-Okay, let's begin!
+# NEW: A more detailed prompt that encourages "thinking"
+custom_prompt_with_thinking = """
+First, think step-by-step and explain your reasoning within `<think>` tags. Analyze the user's question and the provided "Study Material" to formulate your answer. Your thought process should be clear and logical.
+
+After your thinking process, provide a final, concise answer to the user. Base your answer **only** on the information from the "Study Material". If the material doesn't contain the answer, state that clearly.
 
 Your Question: {question}
 Our Study Material (Context): {context}
+
 My Helpful Answer:
 """
 
 def answer_query(documents, model, query):
     context = get_context(documents)
-    prompt =  ChatPromptTemplate.from_template(custome_prompt)
+    prompt =  ChatPromptTemplate.from_template(custom_prompt_with_thinking)
     chain = prompt | model
-    return chain.invoke({"question": query,"context": context})
+    # The response will now contain both the <think> block and the final answer
+    response_content = chain.invoke({"question": query,"context": context}).content
+    return response_content
