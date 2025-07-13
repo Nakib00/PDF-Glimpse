@@ -1,14 +1,13 @@
 from langchain_groq import ChatGroq
-from vector_database import faiss_db
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 load_dotenv()
 
-llm_model = ChatGroq(model="deepseek-r1-distill-llama-70b") 
+llm_model = ChatGroq(model="deepseek-r1-distill-llama-70b")
 
 # Retrieve Documents from the vector database
-def retrieve_docs(query):
-    return faiss_db.similarity_search(query)
+def retrieve_docs(query, db):
+    return db.similarity_search(query)
 
 def get_context(documents):
     context ="\n\n".join([doc.page_content for doc in documents])
@@ -26,8 +25,8 @@ Our Study Material (Context): {context}
 My Helpful Answer:
 """
 
-def answer_query(documents, model, query): 
+def answer_query(documents, model, query):
     context = get_context(documents)
     prompt =  ChatPromptTemplate.from_template(custome_prompt)
     chain = prompt | model
-    return chain.invoke({"question": query,"context": context}) 
+    return chain.invoke({"question": query,"context": context})
